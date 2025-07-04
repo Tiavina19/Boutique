@@ -12,6 +12,11 @@ function Home() {
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [articleToDelete, setArticleToDelete] = useState(null);
+  const [notification, setNotification] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const articlesPerPage = 8;
 
   useEffect(() => {
     fetchArticles()
@@ -25,7 +30,31 @@ function Home() {
       });
   }, []);
 
-  if (loading) return <div>Chargement...</div>;
+  if (loading)
+    return (
+      <div className="loader-container">
+        <div className="pixar-loader">
+          {"Yhanja".split("").map((letter, i) => (
+            <span
+              className="pixar-letter"
+              style={{ animationDelay: `${i * 0.18}s` }}
+              key={i}
+            >
+              {letter}
+            </span>
+          ))}
+          <div className="pixar-shadow">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <span
+                className="pixar-shadow-ellipse"
+                key={i}
+                style={{ animationDelay: `${i * 0.18}s` }}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
 
   const filteredArticles = articles.filter(
     (article) =>
@@ -38,6 +67,7 @@ function Home() {
   ];
   const handleAddArticle = (newArticle) => {
     setArticles([newArticle, ...articles]);
+    showNotification("Article ajouté avec succès");
   };
 
   const handleEditArticle = (updatedArticle) => {
@@ -46,17 +76,18 @@ function Home() {
     );
     setEditMode(false);
     setSelectedArticle(updatedArticle);
+    showNotification("Article modifié");
   };
-  const handleDeleteArticle = (id) => {
-    if (window.confirm("Voulez-vous vraiment supprimer cet article ?")) {
-      setArticles(articles.filter((a) => a.id !== id));
-      setSelectedArticle(null);
-      setEditMode(false);
-    }
+  const showNotification = (message, duration = 2500) => {
+    setNotification(message);
+    setTimeout(() => setNotification(null), duration);
   };
-
+  const indexOfLast = currentPage * articlesPerPage;
+  const indexOfFirst = indexOfLast - articlesPerPage;
+  const currentArticles = filteredArticles.slice(indexOfFirst, indexOfLast);
   return (
     <div className="home-container">
+      {notification && <div className="notification-toast">{notification}</div>}
       <div className="background-decor">
         <svg
           className="decor-circle decor-circle-1"
@@ -141,12 +172,25 @@ function Home() {
 
       {/* Barre de recherche et filtre */}
       <div className="home-search">
-        <input
-          type="text"
-          placeholder="Rechercher un article..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <div className="search-input-wrapper">
+          <span className="search-icon" aria-hidden="true">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="7" stroke="#da68a0" strokeWidth="2" />
+              <path
+                d="M20 20l-3.5-3.5"
+                stroke="#da68a0"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            </svg>
+          </span>
+          <input
+            type="text"
+            placeholder="Rechercher un article..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
         <select
           style={{
             marginLeft: "16px",
@@ -165,10 +209,10 @@ function Home() {
 
       {/* Liste des articles */}
       <div className="articles-list">
-        {filteredArticles.length === 0 ? (
+        {currentArticles.length === 0 ? (
           <div className="no-articles">Aucun article trouvé.</div>
         ) : (
-          filteredArticles.map((article, idx) => (
+          currentArticles.map((article, idx) => (
             <ArticleCard
               key={article.id}
               article={article}
@@ -229,7 +273,10 @@ function Home() {
                 </button>
                 <button
                   className="modal-delete"
-                  onClick={() => handleDeleteArticle(selectedArticle.id)}
+                  onClick={() => {
+                    setArticleToDelete(selectedArticle.id);
+                    setShowDeleteConfirm(true);
+                  }}
                   style={{
                     background: "#ed3572",
                     color: "#fff",
@@ -237,7 +284,6 @@ function Home() {
                     borderRadius: 8,
                     padding: "10px 20px",
                     fontWeight: 700,
-                    marginRight: "12px",
                     cursor: "pointer",
                   }}
                 >
@@ -257,6 +303,85 @@ function Home() {
           </div>
         </div>
       )}
+      {showDeleteConfirm && (
+        <div
+          className="modal-overlay"
+          onClick={() => setShowDeleteConfirm(false)}
+        >
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3 style={{ marginBottom: 24, color: "#ed3572" }}>
+              Confirmer la suppression
+            </h3>
+            <p>Voulez-vous vraiment supprimer cet article ?</p>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "16px",
+                marginTop: 24,
+              }}
+            >
+              <button
+                style={{
+                  background: "#ed3572",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: 8,
+                  padding: "10px 24px",
+                  fontWeight: 700,
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  setArticles(articles.filter((a) => a.id !== articleToDelete));
+                  setShowDeleteConfirm(false);
+                  setSelectedArticle(null);
+                  setEditMode(false);
+                  showNotification("Aritcle supprimé");
+                }}
+              >
+                supprimer
+              </button>
+              <button
+                style={{
+                  background: "#e5e7eb",
+                  color: "#222",
+                  border: "none",
+                  borderRadius: 8,
+                  padding: "10px 24px",
+                  fontWeight: 700,
+                  cursor: "pointer",
+                }}
+                onClick={() => setShowDeleteConfirm(false)}
+              >
+                Annuler
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="pagination">
+        <button
+          onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+          disabled={currentPage === 1}
+        >
+          Précédent
+        </button>
+        <span>
+          Page {currentPage} /{" "}
+          {Math.ceil(filteredArticles.length / articlesPerPage)}
+        </span>
+        <button
+          onClick={() => setCurrentPage((p) => p + 1)}
+          disabled={indexOfLast >= filteredArticles.length}
+        >
+          Suivant
+        </button>
+      </div>
+      <footer className="app-footer">
+        <span>
+          © {new Date().getFullYear()} Yhanj'Angel — All rights reserved.
+        </span>
+      </footer>
     </div>
   );
 }

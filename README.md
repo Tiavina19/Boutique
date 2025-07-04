@@ -1,70 +1,60 @@
-# Getting Started with Create React App
+# Yhanj'Angel - Articles Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Ce projet est un dashboard React moderne permettant d'afficher, rechercher, filtrer, ajouter, modifier et supprimer des articles. Il met l'accent sur l'expérience utilisateur, le design responsive et les bonnes pratiques de développement.
 
-## Available Scripts
+## Fonctionnalités principales
 
-In the project directory, you can run:
+- Affichage d'une liste d'articles (Fake Store API)
+- Recherche en temps réel par titre
+- Filtre par catégorie
+- Ajout, modification et suppression d'article via formulaire
+- Modale de détails d'article avec animations
+- Confirmation de suppression personnalisée
+- Notifications de succès/erreur
+- Loader animé personnalisé au chargement
+- Pagination côté client
+- Design responsive et moderne
 
-### `npm start`
+## Installation
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. Clonez le dépôt :
+   ```bash
+   git clone <url-du-repo>
+   cd <nom-du-dossier>
+   ```
+2. Installez les dépendances :
+   ```bash
+   npm install
+   ```
+3. Lancez le projet en développement :
+   ```bash
+   npm start
+   ```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Structure du projet
 
-### `npm test`
+- `src/pages/Home.js` : page principale, logique d'affichage et de gestion des articles
+- `src/components/ArticleCard.js` : composant carte d'article
+- `src/components/ArticleForm.js` : formulaire d'ajout/modification
+- `src/api/articles.js` : fonctions d'appel à l'API
+- `src/styles/` : fichiers CSS organisés par composant/page
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Technologies utilisées
 
-### `npm run build`
+- ReactJS (Create React App)
+- CSS modules classiques
+- API Fake Store (https://fakestoreapi.com/products)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Personnalisation
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Palette de couleurs personnalisée
+- Loader animé inspiré du style Pixar
+- Fond décoratif SVG
+- Icônes SVG pour la recherche et les actions
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Bonnes pratiques
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Code clair, structuré et commenté
+- Séparation des responsabilités (composants, styles, logique)
+- Responsive design (desktop et mobile)
+- Accessibilité (focus visible, contrastes)
