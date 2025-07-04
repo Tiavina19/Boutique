@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../styles/ArticleForm.css";
 
 function ArticleForm({ onAdd, onClose }) {
   const [title, setTitle] = useState("");
@@ -27,10 +28,7 @@ function ArticleForm({ onAdd, onClose }) {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      style={{ display: "flex", flexDirection: "column", gap: 12 }}
-    >
+    <form className="article-form" onSubmit={handleSubmit}>
       <h2>Ajouter un article</h2>
       <input
         type="text"
@@ -68,30 +66,9 @@ function ArticleForm({ onAdd, onClose }) {
         onChange={(e) => setDescription(e.target.value)}
         required
       />
-      <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-        <button
-          type="submit"
-          style={{
-            background: "#2563eb",
-            color: "#fff",
-            border: "none",
-            borderRadius: 6,
-            padding: "8px 16px",
-          }}
-        >
-          Ajouter
-        </button>
-        <button
-          type="button"
-          onClick={onClose}
-          style={{
-            background: "#e5e7eb",
-            color: "#222",
-            border: "none",
-            borderRadius: 6,
-            padding: "8px 16px",
-          }}
-        >
+      <div className="article-form-buttons">
+        <button type="submit">Ajouter</button>
+        <button type="button" onClick={onClose}>
           Annuler
         </button>
       </div>

@@ -41,23 +41,74 @@ function Home() {
 
   return (
     <div className="home-container">
-      <h1 className="home-title">Liste des articles</h1>
+      <div className="background-decor">
+        <svg
+          className="decor-circle decor-circle-1"
+          width="320"
+          height="320"
+          viewBox="0 0 320 320"
+          fill="none"
+        >
+          <circle cx="160" cy="160" r="160" fill="#da68a0" fillOpacity="0.08" />
+        </svg>
+        <svg
+          className="decor-circle decor-circle-2"
+          width="220"
+          height="220"
+          viewBox="0 0 220 220"
+          fill="none"
+        >
+          <circle cx="110" cy="110" r="110" fill="#77c593" fillOpacity="0.09" />
+        </svg>
+        <svg
+          className="decor-circle decor-circle-3"
+          width="180"
+          height="180"
+          viewBox="0 0 180 180"
+          fill="none"
+        >
+          <circle cx="90" cy="90" r="90" fill="#ed3572" fillOpacity="0.07" />
+        </svg>
+      </div>
+      <h1 className="home-title">
+        <span className="yhanj">Yhanj</span>
+        <span
+          style={{
+            color: "#ed3572",
+            fontSize: "2.2rem",
+            fontWeight: 700,
+            margin: "0 8px",
+          }}
+        >
+          '
+        </span>
+        <span className="angel">
+          {"ANGEL".split("").map((letter, i) => (
+            <span
+              className="angel-letter"
+              style={{ animationDelay: `${i * 0.13}s` }}
+              key={i}
+            >
+              {letter}
+            </span>
+          ))}
+        </span>
+      </h1>
 
       {/* Bouton pour ouvrir le formulaire d'ajout */}
-      <button
-        onClick={() => setShowForm(true)}
-        style={{
-          background: "#2563eb",
-          color: "#fff",
-          border: "none",
-          borderRadius: 6,
-          padding: "10px 20px",
-          marginBottom: "20px",
-          fontSize: "1rem",
-          cursor: "pointer",
-        }}
-      >
-        + Ajouter un article
+      <button onClick={() => setShowForm(true)} className="add-article-btn">
+        <span className="plus-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <circle cx="11" cy="11" r="11" fill="#da68a0" opacity="0.12" />
+            <path
+              d="M11 6v10M6 11h10"
+              stroke="#da68a0"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+            />
+          </svg>
+        </span>
+        Ajouter un article
       </button>
 
       {/* Modale du formulaire d'ajout */}
@@ -98,13 +149,18 @@ function Home() {
 
       {/* Liste des articles */}
       <div className="articles-list">
-        {filteredArticles.map((article) => (
-          <ArticleCard
-            key={article.id}
-            article={article}
-            onClick={() => setSelectedArticle(article)}
-          />
-        ))}
+        {filteredArticles.length === 0 ? (
+          <div className="no-articles">Aucun article trouvé.</div>
+        ) : (
+          filteredArticles.map((article, idx) => (
+            <ArticleCard
+              key={article.id}
+              article={article}
+              onClick={() => setSelectedArticle(article)}
+              style={{ animationDelay: `${idx * 80}ms` }}
+            />
+          ))
+        )}
       </div>
 
       {/* Modale de détails d'article */}
