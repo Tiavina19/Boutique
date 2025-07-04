@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import "../styles/ArticleForm.css";
 
-function ArticleForm({ onAdd, onClose }) {
-  const [title, setTitle] = useState("");
-  const [price, setPrice] = useState("");
-  const [category, setCategory] = useState("");
-  const [image, setImage] = useState("");
-  const [description, setDescription] = useState("");
+function ArticleForm({ onAdd, onClose, initialValues = {}, isEdit = false }) {
+  const [title, setTitle] = useState(initialValues.title || "");
+  const [price, setPrice] = useState(initialValues.price || "");
+  const [category, setCategory] = useState(initialValues.category || "");
+  const [image, setImage] = useState(initialValues.image || "");
+  const [description, setDescription] = useState(
+    initialValues.description || ""
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const newArticle = {
-      id: Date.now(),
+      id: initialValues.id || Date.now(),
       title,
       price: parseFloat(price),
       category,
@@ -29,7 +31,7 @@ function ArticleForm({ onAdd, onClose }) {
 
   return (
     <form className="article-form" onSubmit={handleSubmit}>
-      <h2>Ajouter un article</h2>
+      <h2>{isEdit ? "Modifier l'article" : "Ajouter un article"}</h2>
       <input
         type="text"
         placeholder="Titre"
@@ -67,7 +69,7 @@ function ArticleForm({ onAdd, onClose }) {
         required
       />
       <div className="article-form-buttons">
-        <button type="submit">Ajouter</button>
+        <button type="submit">{isEdit ? "Modifier" : "Ajouter"}</button>
         <button type="button" onClick={onClose}>
           Annuler
         </button>

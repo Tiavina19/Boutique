@@ -11,6 +11,7 @@ function Home() {
   const [selectedCategory, setSelectedCategory] = useState("Toutes");
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     fetchArticles()
@@ -37,6 +38,21 @@ function Home() {
   ];
   const handleAddArticle = (newArticle) => {
     setArticles([newArticle, ...articles]);
+  };
+
+  const handleEditArticle = (updatedArticle) => {
+    setArticles(
+      articles.map((a) => (a.id === updatedArticle.id ? updatedArticle : a))
+    );
+    setEditMode(false);
+    setSelectedArticle(updatedArticle);
+  };
+  const handleDeleteArticle = (id) => {
+    if (window.confirm("Voulez-vous vraiment supprimer cet article ?")) {
+      setArticles(articles.filter((a) => a.id !== id));
+      setSelectedArticle(null);
+      setEditMode(false);
+    }
   };
 
   return (
@@ -165,27 +181,79 @@ function Home() {
 
       {/* Modale de détails d'article */}
       {selectedArticle && (
-        <div className="modal-overlay" onClick={() => setSelectedArticle(null)}>
+        <div
+          className="modal-overlay"
+          onClick={() => {
+            setSelectedArticle(null);
+            setEditMode(false);
+          }}
+        >
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button
-              className="modal-close"
-              onClick={() => setSelectedArticle(null)}
-            >
-              Fermer
-            </button>
-            <img
-              src={selectedArticle.image}
-              alt={selectedArticle.title}
-              style={{ width: "120px", marginBottom: "16px" }}
-            />
-            <h2>{selectedArticle.title}</h2>
-            <p style={{ color: "#2563eb", fontWeight: "bold" }}>
-              {selectedArticle.price} €
-            </p>
-            <p style={{ color: "#6b7280", marginBottom: "8px" }}>
-              {selectedArticle.category}
-            </p>
-            <p>{selectedArticle.description}</p>
+            {editMode ? (
+              <ArticleForm
+                initialValues={selectedArticle}
+                onAdd={handleEditArticle}
+                onClose={() => setEditMode(false)}
+                isEdit
+              />
+            ) : (
+              <>
+                <img
+                  src={selectedArticle.image}
+                  alt={selectedArticle.title}
+                  style={{ width: "120px", marginBottom: "16px" }}
+                />
+                <h2>{selectedArticle.title}</h2>
+                <p style={{ color: "#2563eb", fontWeight: "bold" }}>
+                  {selectedArticle.price} €
+                </p>
+                <p style={{ color: "#6b7280", marginBottom: "8px" }}>
+                  {selectedArticle.category}
+                </p>
+                <p>{selectedArticle.description}</p>
+                <button
+                  className="modal-edit"
+                  onClick={() => setEditMode(true)}
+                  style={{
+                    background: "#77c593",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: 8,
+                    padding: "10px 20px",
+                    fontWeight: 700,
+                    marginRight: "12px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Modifier
+                </button>
+                <button
+                  className="modal-delete"
+                  onClick={() => handleDeleteArticle(selectedArticle.id)}
+                  style={{
+                    background: "#ed3572",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: 8,
+                    padding: "10px 20px",
+                    fontWeight: 700,
+                    marginRight: "12px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Supprimer
+                </button>
+                <button
+                  className="modal-close"
+                  onClick={() => {
+                    setSelectedArticle(null);
+                    setEditMode(false);
+                  }}
+                >
+                  Fermer
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}
