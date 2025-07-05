@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/mon-exercice-react/static/css/main.32643e48.css",
-    "main.js": "/mon-exercice-react/static/js/main.ccb288cd.js",
-    "index.html": "/mon-exercice-react/index.html",
-    "main.32643e48.css.map": "/mon-exercice-react/static/css/main.32643e48.css.map",
-    "main.ccb288cd.js.map": "/mon-exercice-react/static/js/main.ccb288cd.js.map"
+    "main.css": "/Boutique/static/css/main.32643e48.css",
+    "main.js": "/Boutique/static/js/main.ccb288cd.js",
+    "index.html": "/Boutique/index.html",
+    "main.32643e48.css.map": "/Boutique/static/css/main.32643e48.css.map",
+    "main.ccb288cd.js.map": "/Boutique/static/js/main.ccb288cd.js.map"
   },
   "entrypoints": [
     "static/css/main.32643e48.css",
